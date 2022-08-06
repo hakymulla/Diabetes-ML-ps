@@ -1,0 +1,41 @@
+datasets:
+  diabetes:
+    column_mapping:
+      categorical_features:
+        - 'CholCheck'
+        - 'Smoker'
+        - 'Stroke'
+        - 'HeartDiseaseorAttack'
+        - 'PhysActivity'
+        - 'Fruits'
+        - 'Veggies'
+        - 'HvyAlcoholConsump'
+        - 'AnyHealthcare'
+        - 'NoDocbcCost'
+        - 'GenHlth'
+        -  'MentHlth'
+        - 'PhysHlth'
+        - 'DiffWalk'
+        - 'Sex'
+        - 'Education'
+      numerical_features:
+        - 'HighBP'
+        - 'HighChol'
+        - 'BMI'
+        - 'Age'
+        - 'Income'
+
+    data_format:
+      header: true
+      separator: ','
+    monitors:
+      - data_drift
+      - target_drift
+    reference_file: ./datasets/diabetes_012_health_indicators_BRFSS2015.csv.zip
+service:
+  calculation_period_sec: 2
+  min_reference_size: 30
+  moving_reference: false
+  datasets_path: datasets
+  use_reference: true
+  window_size: 5

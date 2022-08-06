@@ -1,0 +1,9 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.9.12
+- pip<=21.2.4
+- pip:
+  - mlflow
+  - lightgbm==3.3.2
+name: mlflow-env
