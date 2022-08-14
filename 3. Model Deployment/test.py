@@ -1,4 +1,5 @@
 import requests
+# pylint: disable=missing-module-docstring
 
 dataset = {'HighBP': 1.0,
             'HighChol': 0.0,
@@ -23,10 +24,7 @@ dataset = {'HighBP': 1.0,
             'Income': 8.0
      }
 
-# dataset_cleaned = predict.preprocess(dataset)
-# pred = predict.predict(dataset_cleaned)
-# print(pred)
 
-url = 'http://localhost:9696/predict'
-response = requests.post(url, json=dataset)
+URL = 'http://localhost:9696/predict'
+response = requests.post(URL, json=dataset)
 print(response.json())

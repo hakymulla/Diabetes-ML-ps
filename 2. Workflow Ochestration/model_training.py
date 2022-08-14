@@ -1,17 +1,23 @@
-# Import Needed Libraries
-import pandas as pd
-import numpy as np
-import mlflow
+# pylint: disable=line-too-long
+
 import os
 import scipy as sp
 import gc
+import pandas as pd
+import numpy as np
+import mlflow
+
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import KFold
 import lightgbm as lgb
 from prefect import flow
 from prefect.task_runners import SequentialTaskRunner
+from prefect.deployments import DeploymentSpec
+from prefect.orion.schemas.schedules import IntervalSchedule
+from prefect.flow_runners import SubprocessFlowRunner
+from datetime import timedelta
 
-os.environ["AWS_PROFILE"] = "hakymulla" 
+os.environ["AWS_PROFILE"] = "hakymulla"
 RANDOM_STATE = 1111
 FOLDS = 5
 TRACKING_SERVER_HOST = "ec2-3-94-180-117.compute-1.amazonaws.com"
@@ -20,6 +26,9 @@ TRACKING_SERVER_HOST = "ec2-3-94-180-117.compute-1.amazonaws.com"
 # Function to read and clean data
 @flow
 def prepare_data(train_path):
+    """
+    Prepared data for modelling
+    """
     df = pd.read_csv(train_path)
     print(df.shape)
     df.rename(columns={"Diabetes_012":"Diabetes_binary"}, inplace=True)
@@ -33,6 +42,9 @@ def prepare_data(train_path):
 # Function to train model with the best hyperparameter gotten from model experiment
 @flow
 def train_best_model(train, target):
+    """
+    Training with the best parameters
+    """
     with mlflow.start_run():
 
         best_params = {'learning_rate':'0.10552983694225122',
@@ -111,16 +123,14 @@ def train_best_model(train, target):
 # Main Function
 @flow(task_runner=SequentialTaskRunner())
 def main(train_path="../datasets/diabetes_binary_5050split_health_indicators_BRFSS2015.csv.zip"):
+    """
+    Experiment tracking
+    """
     # mlflow.set_tracking_uri(f"http://{TRACKING_SERVER_HOST}:5000")
     mlflow.set_tracking_uri("sqlite:///diabetes_mlflow.db")
     mlflow.set_experiment("diabetes_experiment")
     train, target = prepare_data(train_path).result()
     train_best_model(train, target)
-
-from prefect.deployments import DeploymentSpec
-from prefect.orion.schemas.schedules import IntervalSchedule
-from prefect.flow_runners import SubprocessFlowRunner
-from datetime import timedelta
 
 DeploymentSpec(
     flow=main,

@@ -25,10 +25,10 @@ dataset = {'HighBP': 1.0,
      }
 
 def test_preprocess():
+    """
+    Test preprocess function
+    """
 
     dataframe = predict_remote.preprocess(dataset)
 
     assert (type(dataframe) == pandas.core.frame.DataFrame and dataframe.shape == (1, 21))
-
-def test_predict():
-    assert  1==1
