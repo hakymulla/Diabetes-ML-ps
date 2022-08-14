@@ -45,7 +45,7 @@ def send_to_evidently_service(record, prediction):
 def predict_endpoint():
     input = request.get_json()
     features = preprocess(input)
-    pred = predict(features)
+    predt = predict(features)
 
     result = {
 	     'diabetes_binary': pred

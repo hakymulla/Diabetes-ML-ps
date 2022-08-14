@@ -18,19 +18,19 @@ datasets:
         - 'DiffWalk'
         - 'Sex'
         - 'Education'
-      numerical_features:
         - 'HighBP'
         - 'HighChol'
+      numerical_features:
         - 'BMI'
         - 'Age'
         - 'Income'
-
     data_format:
       header: true
       separator: ','
     monitors:
       - data_drift
-      - target_drift
+      - cat_target_drift
+      - num_target_drift
     reference_file: ./datasets/diabetes_012_health_indicators_BRFSS2015.csv.zip
 service:
   calculation_period_sec: 2

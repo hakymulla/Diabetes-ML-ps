@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+lightgbm = "*"
+requests = "*"
+pandas = "*"
+gunicorn = "*"
+pipfile = "*"
+mlflow = "==1.26.1"
+boto3 = "*"
+pytest = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
